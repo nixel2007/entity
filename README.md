@@ -1,6 +1,6 @@
 # entity - OneScript Persistence API
 
-Библиотека `Entity` предназначена для работы с данными БД как с простыми OneScript объектами. Является реализацией концепции ORM в OneScript. Вдохновение черпается из Java Persistence API.
+Библиотека `Entity` предназначена для работы с данными БД как с простыми OneScript объектами. Является реализацией концепции ORM и шаблона [`DataMapper`](https://martinfowler.com/eaaCatalog/dataMapper.html) в OneScript. Вдохновение черпается из [Java Persistence API](https://ru.wikipedia.org/wiki/Java_Persistence_API) и [TypeORM](https://github.com/typeorm/typeorm).
 
 Возможности:
 
