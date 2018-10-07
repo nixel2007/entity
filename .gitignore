@@ -1,2 +1,4 @@
 *.db
 *.ospx
+
+tests-reports/
