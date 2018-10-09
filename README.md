@@ -1,5 +1,9 @@
 # entity - OneScript Persistence API
 
+
+[![GitHub release](https://img.shields.io/github/release/nixel2007/entity.svg?style=flat-square)](https://github.com/nixel2007/entity/releases)
+[![GitHub license](https://img.shields.io/github/license/nixel2007/entity.svg?style=flat-square)](https://github.com/nixel2007/entity/blob/develop/LICENSE.md)
+
 Библиотека `Entity` предназначена для работы с данными БД как с простыми OneScript объектами. Является реализацией концепции ORM и шаблона [`DataMapper`](https://martinfowler.com/eaaCatalog/dataMapper.html) в OneScript. Вдохновение черпается из [Java Persistence API](https://ru.wikipedia.org/wiki/Java_Persistence_API) и [TypeORM](https://github.com/typeorm/typeorm).
 
 Возможности:
