@@ -9,7 +9,7 @@ before_install:
   - echo "deb http://download.mono-project.com/repo/ubuntu xenial main" | sudo tee /etc/apt/sources.list.d/mono-official.list
   - sudo apt-get update
   - sudo apt-get install mono-complete mono-devel
-  - wget -O os.deb http://oscript.io/downloads/1_0_21/onescript-engine_1.0.21_all.deb
+  - wget -O os.deb http://oscript.io/downloads/night-build/deb
   - sudo dpkg -i os.deb; sudo apt install -f
   - oscript
   - curl -L https://github.com/asosnoviy/1testrunner/releases/download/1.7.1-alpha/1testrunner-1.7.1_alpha.ospx > 1testrunner.ospx
