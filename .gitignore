@@ -1,2 +1,5 @@
 *.db
 *.ospx
+
+coverage/
+tests.xml
