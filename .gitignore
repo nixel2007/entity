@@ -2,3 +2,8 @@
 *.ospx
 
 tests-reports/
+.scannerwork/
+.idea/
+coverage/
+bsl-json.json
+tests.xml
