@@ -1,6 +1,6 @@
 #!/bin/bash
 
-oscript ./tasks/test.os
+oscript ./tasks/coverage.os
 
 temp=`cat packagedef | grep ".Версия(" | sed 's|[^"]*"||' | sed -r 's/".+//'`
 version=${temp##*|}
