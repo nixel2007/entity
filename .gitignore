@@ -3,6 +3,7 @@
 
 tests-reports/
 .scannerwork/
+.sonar/
 .idea/
 coverage/
 bsl-json.json

@@ -4,6 +4,15 @@ sudo: required
 
 dist: trusty
 
+git:
+  depth: false
+
+addons:
+  sonarqube: true
+
+jdk:
+  - openjdk8
+
 before_install: 
   - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
   - echo "deb http://download.mono-project.com/repo/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/mono-official.list
@@ -13,6 +22,7 @@ before_install:
   - sudo dpkg -i os.deb; sudo apt install -f
   - oscript
   - curl -L https://github.com/asosnoviy/1testrunner/releases/download/1.7.1-alpha/1testrunner-1.7.1_alpha.ospx > 1testrunner.ospx
+  - wget -O bsl-language-server.jar https://github.com/1c-syntax/bsl-language-server/releases/download/v0.2.1-47-dev/bsl-language-server-0.2.1+47.jar
 
 install: 
   - sudo opm install
