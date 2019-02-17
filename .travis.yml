@@ -30,4 +30,4 @@ install:
   - sudo opm install -f ./1testrunner.ospx
 
 script:
-  - opm test
+  - ./travis.sh
