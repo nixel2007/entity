@@ -22,7 +22,7 @@ before_install:
   - sudo dpkg -i os.deb; sudo apt install -f
   - oscript
   - curl -L https://github.com/asosnoviy/1testrunner/releases/download/1.7.1-alpha/1testrunner-1.7.1_alpha.ospx > 1testrunner.ospx
-  - wget -O bsl-language-server.jar https://github.com/1c-syntax/bsl-language-server/releases/download/v0.3.0/bsl-language-server-0.3.0.jar
+  - wget -O bsl-language-server.jar https://github.com/1c-syntax/bsl-language-server/releases/download/v0.4.0/bsl-language-server-0.4.0.jar
 
 install: 
   - sudo opm install
