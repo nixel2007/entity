@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 oscript ./tasks/coverage.os
 
 temp=`cat packagedef | grep ".Версия(" | sed 's|[^"]*"||' | sed -r 's/".+//'`
@@ -7,8 +9,6 @@ version=${temp##*|}
 
 if [ "$TRAVIS_SECURE_ENV_VARS" == "true" ]; then
   if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    java -jar ./bsl-language-server.jar -a -s ./src -r json
-
     sonar-scanner \
         -Dsonar.host.url=$SONAR_HOST \
         -Dsonar.login=$SONAR_TOKEN \
