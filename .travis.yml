@@ -29,4 +29,7 @@ install:
   - sudo opm install coverage
 
 script:
-  - ./travis.sh
+  - oscript ./tasks/coverage.os
+
+after_script:
+  - ./.travis-after-success.sh
