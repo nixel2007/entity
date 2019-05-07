@@ -32,4 +32,4 @@ script:
   - oscript ./tasks/coverage.os
 
 after_script:
-  - ./.travis-after-success.sh
+  - ./.travis-after-script.sh
