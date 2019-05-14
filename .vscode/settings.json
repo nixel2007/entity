@@ -1,3 +1,4 @@
 {
-    "language-1c-bsl.linterEntryPoint": "./src/fake-entrypoint.os"
+    "language-1c-bsl.linterEntryPoint": "./src/fake-entrypoint.os",
+    "coverage-gutters.xmlname": "out/coverage.xml"
 }
