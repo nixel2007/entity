@@ -1,5 +1,8 @@
 *.db
 *.ospx
 
-coverage/
-tests.xml
+tests-reports/
+.scannerwork/
+.sonar/
+.idea/
+out/
