@@ -12,6 +12,7 @@ addons:
   apt:
     sources:
      - sourceline: 'deb http://download.mono-project.com/repo/ubuntu trusty main'
+       key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0328081'
     packages:
      - mono-complete
 
