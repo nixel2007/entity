@@ -17,7 +17,7 @@ addons:
      - mono-complete
 
 jdk:
-  - openjdk8
+  - openjdk11
 
 before_install: 
   - wget -O os.deb http://oscript.io/downloads/night-build/deb
