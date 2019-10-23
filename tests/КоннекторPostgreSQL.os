@@ -19,7 +19,7 @@
 		ОбъединитьПути(ТекущийКаталог(), "tests", "fixtures", "АвтоинкрементныйКлючБезКолонок.os"), 
 		"АвтоинкрементныйКлючБезКолонок");
 	
-	СтрокаСоединения = "Host=localhost;Username=postgres;Password=paswwd;Database=postgres;port=8002;";
+	СтрокаСоединения = "Host=localhost;Username=postgres;Password=postgres;Database=postgres;port=5432;";
 	МенеджерСущностей = Новый МенеджерСущностей(Тип("КоннекторPostgreSQL"), СтрокаСоединения);
 
 	МенеджерСущностей.Инициализировать();	
