@@ -4,6 +4,8 @@
 
 [![GitHub release](https://img.shields.io/github/release/nixel2007/entity.svg?style=flat-square)](https://github.com/nixel2007/entity/releases)
 [![GitHub license](https://img.shields.io/github/license/nixel2007/entity.svg?style=flat-square)](https://github.com/nixel2007/entity/blob/develop/LICENSE.md)
+[![Статус Порога Качества](https://sonar.oscript.ru/api/project_badges/measure?project=entity&metric=alert_status)](https://sonar.oscript.ru/dashboard?id=entity)
+[![Рейтинг Сопровождаемости](https://sonar.oscript.ru/api/project_badges/measure?project=entity&metric=sqale_rating)](https://sonar.oscript.ru/dashboard?id=entity)
 
 Библиотека `Entity` предназначена для работы с данными БД как с простыми OneScript объектами. Является реализацией концепции ORM и шаблона [`DataMapper`](https://martinfowler.com/eaaCatalog/dataMapper.html) в OneScript. Вдохновение черпается из [Java Persistence API](https://ru.wikipedia.org/wiki/Java_Persistence_API) и [TypeORM](https://github.com/typeorm/typeorm).
 
@@ -69,7 +71,9 @@
 Процедура ПриСозданииОбъекта()
 
 КонецПроцедуры
+```
 
+```bsl
 // file: Документ.os
 
 &Идентификатор
@@ -84,10 +88,12 @@
 Перем Серия Экспорт;                       // Колонка `Номер` будет создана в таблице, т.к. поле экспортное
 
 &Сущность(ИмяТаблицы = "Документы")
-Процедура ПриСозданииОбъекта               // Объект с типом "Документ" будет представлен в СУБД как таблица "Документы"
+Процедура ПриСозданииОбъекта()             // Объект с типом "Документ" будет представлен в СУБД как таблица "Документы"
 
 КонецПроцедуры
+```
 
+```bsl
 // file: ФизическоеЛицо.os
 
 // Данный класс содержит информацию о физических лицах.
@@ -107,7 +113,7 @@
 &Колонка(Тип = "Ссылка", ТипСсылки = "СтраныМира")
 Перем Гражданство Экспорт;                 // Данная колонка будет хранить ссылку на класс `СтраныМира`
 
-&ПодчиненнаяТаблица(Тип = "Массив", ТипЭлемента = "Документы)
+&ПодчиненнаяТаблица(Тип = "Массив", ТипЭлемента = "Документы")
 Перем Документы Экспорт;                   // Данное поле будет хранить массив ссылок на класс `Документ`. Для хранения
                                            // массива будет создана отдельная таблица.
 
