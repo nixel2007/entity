@@ -11,9 +11,11 @@
             "program": "${file}",
             "args": [],
             "cwd": "${workspaceRoot}",
+            "env": {},
             "runtimeExecutable": null,
+            "runtimeArgs": [],
             "debugPort": 2801,
-            "protocol": "internal"
+            "protocol": "tcp"
         }
     ]
 }
