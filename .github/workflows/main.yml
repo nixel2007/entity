@@ -27,6 +27,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        opm install opm@1.0.0
         opm install -l --dev
 
     # Runs a set of commands using the runners shell
