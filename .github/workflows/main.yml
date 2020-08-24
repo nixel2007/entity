@@ -4,37 +4,14 @@ on:
   push:
   pull_request:
 
-env:
-  GIT_EMAIL: ci@mail
-  GIT_NAME: ci
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, windows-latest]
         oscript_version: ['1.2.0', 'dev', 'stable']
-
-    # Service containers to run with `runner-job`
-    services:
-      # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
 
     steps:
     - uses: actions/checkout@v2
@@ -49,12 +26,16 @@ jobs:
         opm install opm@1.0.0
         opm install -l --dev
 
-    - name: Linux specific dependencies
+    - name: Setup PostgreSQL
       if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt install -y libsqlite0 libsqlite3-0
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql user: postgres
+        postgresql password: postgres
 
-    # Runs a set of commands using the runners shell
     - name: Run tests
+      env:
+        TESTRUNNER_RUN_POSTGRES_TESTS: "${{ matrix.os == 'ubuntu-latest' }}"
+        TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
       run: |
         oscript ./tasks/coverage.os
