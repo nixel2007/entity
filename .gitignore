@@ -6,3 +6,4 @@ tests-reports/
 .sonar/
 .idea/
 out/
+oscript_modules/
