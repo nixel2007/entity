@@ -15,6 +15,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
 
     - name: Setup Onescript Action
       uses: otymko/setup-onescript@v1.0
@@ -56,3 +59,35 @@ jobs:
         TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
       run: |
         oscript ./tasks/coverage.os
+
+    - name: Configure env vars for SonarCloud scan
+      if: matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
+      run: |
+        echo "::set-env name=PATH::/opt/sonar-scanner/bin:$PATH"
+    
+    - name: Compute branch name
+      uses: nixel2007/branch-name@v3
+
+    - name: SonarCloud Scan on push
+      if:  github.repository == 'nixel2007/entity' && github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
+      uses: nixel2007/sonarcloud-github-action@v1.4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.host.url=https://sonar.openbsl.ru
+          -Dsonar.branch.name=${{ env.BRANCH_NAME }}
+           
+    - name: SonarCloud Scan on PR
+      if: github.repository == 'nixel2007/entity' && github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
+      uses: nixel2007/sonarcloud-github-action@v1.4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.host.url=https://sonar.openbsl.ru
+          -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+          -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }}
+          -Dsonar.pullrequest.base=${{ github.event.pull_request.base.ref }}
