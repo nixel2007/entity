@@ -15,9 +15,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
 
     - name: Setup Onescript Action
       uses: otymko/setup-onescript@v1.0
@@ -58,7 +55,7 @@ jobs:
         TESTRUNNER_RUN_POSTGRES_TESTS: "${{ matrix.os != 'windows-latest' }}"
         TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
       run: |
-        oscript ./tasks/coverage.os
+        oscript ./tasks/test.os
 
     - name: Configure env vars for SonarCloud scan
       if: matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
@@ -67,6 +64,14 @@ jobs:
     
     - name: Compute branch name
       uses: nixel2007/branch-name@v3
+
+    - name: Run coverage tests
+      if: matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
+      env:
+        TESTRUNNER_RUN_POSTGRES_TESTS: "${{ matrix.os != 'windows-latest' }}"
+        TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
+      run: |
+        oscript ./tasks/coverage.os
 
     - name: SonarCloud Scan on push
       if:  github.repository == 'nixel2007/entity' && github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'

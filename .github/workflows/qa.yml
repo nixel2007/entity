@@ -1,0 +1,70 @@
+name: QA
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+
+    - name: Setup Onescript Action
+      uses: otymko/setup-onescript@v1.0
+      with:
+        version: dev
+
+    - name: Install dependencies
+      run: |
+        opm install opm@1.0.0
+        opm install -l --dev
+
+    - name: Setup PostgreSQL
+      run: |
+        docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 postgres
+        docker ps
+        while [ "`docker inspect -f {{.State.Health.Status}} postgres`" != "healthy" ]; do docker ps && sleep 2; done
+        docker ps
+
+    - name: Configure env vars for SonarCloud scan
+      run: |
+        echo "::set-env name=PATH::/opt/sonar-scanner/bin:$PATH"
+    
+    - name: Compute branch name
+      uses: nixel2007/branch-name@v3
+
+    - name: Run coverage tests
+      env:
+        TESTRUNNER_RUN_POSTGRES_TESTS: true
+        TESTRUNNER_RUN_SQLITE_TESTS: false
+      run: |
+        oscript ./tasks/coverage.os
+
+    - name: SonarCloud Scan on push
+      if:  github.repository == 'nixel2007/entity' && github.event_name == 'push'
+      uses: nixel2007/sonarcloud-github-action@v1.4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.host.url=https://sonar.openbsl.ru
+          -Dsonar.branch.name=${{ env.BRANCH_NAME }}
+           
+    - name: SonarCloud Scan on PR
+      if: github.repository == 'nixel2007/entity' && github.event_name == 'pull_request'
+      uses: nixel2007/sonarcloud-github-action@v1.4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.host.url=https://sonar.openbsl.ru
+          -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+          -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }}
+          -Dsonar.pullrequest.base=${{ github.event.pull_request.base.ref }}
