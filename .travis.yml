@@ -20,7 +20,7 @@ jdk:
   - openjdk11
 
 before_install: 
-  - wget -O os.deb http://oscript.io/downloads/night-build/deb
+  - wget -O os.deb http://oscript.io/downloads/night-build/deb?bitness=x64
   - sudo dpkg -i os.deb; sudo apt install -f
   - oscript
 

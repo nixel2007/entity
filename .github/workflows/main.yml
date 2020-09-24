@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 0 * * 1'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        oscript_version: ['1.2.0', 'dev', 'stable']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Onescript Action
+      uses: otymko/setup-onescript@v1.0
+      with:
+        version: ${{ matrix.oscript_version }}
+
+    - name: Install dependencies
+      run: |
+        opm install opm@1.0.0
+        opm install -l --dev
+
+    - name: Install docker
+      if: matrix.os == 'macos-latest'
+      run: |
+        mkdir -p ~/.docker/machine/cache
+        curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.12/boot2docker.iso
+        brew install docker docker-machine
+        docker-machine create --driver virtualbox default
+        docker-machine env default
+
+    - name: Setup PostgreSQL
+      if: matrix.os != 'windows-latest'
+      run: |
+        eval $(docker-machine env default) || true
+        docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 postgres
+        docker ps
+        while [ "`docker inspect -f {{.State.Health.Status}} postgres`" != "healthy" ]; do docker ps && sleep 2; done
+        docker ps
+    
+    - name: Configure env vars on macos
+      if: matrix.os == 'macos-latest'
+      run: |
+          eval $(docker-machine env default)
+          echo "::set-env name=POSTGRES_HOST::$(docker-machine ip)"
+
+    - name: Run tests
+      env:
+        TESTRUNNER_RUN_POSTGRES_TESTS: "${{ matrix.os != 'windows-latest' }}"
+        TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
+      run: |
+        oscript ./tasks/test.os
+
+    - name: Configure env vars for SonarCloud scan
+      if: matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
+      run: |
+        echo "::set-env name=PATH::/opt/sonar-scanner/bin:$PATH"
+    
+    - name: Compute branch name
+      uses: nixel2007/branch-name@v3
+
+    - name: Run coverage tests
+      if: matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
+      env:
+        TESTRUNNER_RUN_POSTGRES_TESTS: "${{ matrix.os != 'windows-latest' }}"
+        TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
+      run: |
+        oscript ./tasks/coverage.os
+
+    - name: SonarCloud Scan on push
+      if:  github.repository == 'nixel2007/entity' && github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
+      uses: nixel2007/sonarcloud-github-action@v1.4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.host.url=https://sonar.openbsl.ru
+          -Dsonar.branch.name=${{ env.BRANCH_NAME }}
+           
+    - name: SonarCloud Scan on PR
+      if: github.repository == 'nixel2007/entity' && github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
+      uses: nixel2007/sonarcloud-github-action@v1.4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.host.url=https://sonar.openbsl.ru
+          -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+          -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }}
+          -Dsonar.pullrequest.base=${{ github.event.pull_request.base.ref }}
