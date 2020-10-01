@@ -21,7 +21,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        opm install opm@1.0.0
+        opm install opm@1.0.1
         opm install -l --dev
 
     - name: Setup PostgreSQL
