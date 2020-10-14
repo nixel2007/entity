@@ -21,7 +21,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        opm install opm@1.0.0
+        opm install opm@1.0.2
         opm install -l --dev
 
     - name: Setup PostgreSQL
@@ -68,3 +68,4 @@ jobs:
           -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
           -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }}
           -Dsonar.pullrequest.base=${{ github.event.pull_request.base.ref }}
+          -Dsonar.scm.revision=${{ github.event.pull_request.head.sha }}
