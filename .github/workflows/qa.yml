@@ -37,6 +37,11 @@ jobs:
     
     - name: Compute branch name
       uses: nixel2007/branch-name@v3
+    
+    - name: Извлечение версии пакета
+      shell: bash
+      run: echo "##[set-output name=version;]`cat packagedef | grep ".Версия(" | sed 's|[^"]*"||' | sed -r 's/".+//'`"
+      id: extract_version
 
     - name: Run coverage tests
       env:
@@ -55,6 +60,7 @@ jobs:
         args: >
           -Dsonar.host.url=https://sonar.openbsl.ru
           -Dsonar.branch.name=${{ env.BRANCH_NAME }}
+          -Dsonar.projectVersion=${{ steps.extract_version.outputs.version }}
            
     - name: SonarCloud Scan on PR
       if: github.repository == 'nixel2007/entity' && github.event_name == 'pull_request'
