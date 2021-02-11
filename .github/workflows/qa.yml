@@ -15,7 +15,7 @@ jobs:
         fetch-depth: 0
 
     - name: Setup Onescript Action
-      uses: otymko/setup-onescript@v1.0
+      uses: otymko/setup-onescript@v1.1
       with:
         version: dev
 
