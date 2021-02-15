@@ -30,13 +30,9 @@ jobs:
         docker ps
         while [ "`docker inspect -f {{.State.Health.Status}} postgres`" != "healthy" ]; do docker ps && sleep 2; done
         docker ps
-
-    - name: Configure env vars for SonarCloud scan
-      run: |
-        echo "::set-env name=PATH::/opt/sonar-scanner/bin:$PATH"
     
     - name: Compute branch name
-      uses: nixel2007/branch-name@v3
+      uses: nelonoel/branch-name@v1.0.1
     
     - name: Извлечение версии пакета
       shell: bash
