@@ -59,11 +59,6 @@ jobs:
         TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
       run: |
         oscript ./tasks/test.os
-
-    - name: Configure env vars for SonarCloud scan
-      if: matrix.os == 'ubuntu-latest' && matrix.oscript_version == 'dev'
-      run: |
-        echo "::set-env name=PATH::/opt/sonar-scanner/bin:$PATH"
     
     - name: Compute branch name
       uses: nelonoel/branch-name@v1.0.1
