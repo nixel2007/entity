@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-10.15] # virtual box are not (officialy) working in macos-11
         oscript_version: ['1.2.0', 'dev', 'stable']
 
     steps:
@@ -33,7 +33,6 @@ jobs:
     - name: Install docker
       if: matrix.os == 'macos-latest'
       run: |
-        brew install --cask virtualbox
         mkdir -p ~/.docker/machine/cache
         curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.12/boot2docker.iso
         brew install docker docker-machine
