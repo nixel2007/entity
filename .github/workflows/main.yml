@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        oscript_version: ['1.2.0', 'dev', 'stable']
+        oscript_version: ['1.6.0', 'dev', 'stable']
 
     steps:
     - uses: actions/checkout@v2.3.5
