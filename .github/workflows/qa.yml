@@ -17,7 +17,7 @@ jobs:
     - name: Setup Onescript Action
       uses: otymko/setup-onescript@v1.1
       with:
-        version: dev
+        version: stable
 
     - name: Install dependencies
       run: |
