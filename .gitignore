@@ -6,4 +6,5 @@ tests-reports/
 .sonar/
 .idea/
 out/
+tests/jsondatabase
 oscript_modules/

@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
@@ -17,7 +17,7 @@ jobs:
     - name: Setup Onescript Action
       uses: otymko/setup-onescript@v1.1
       with:
-        version: dev
+        version: "1.8.3"
 
     - name: Install dependencies
       run: |
@@ -48,7 +48,7 @@ jobs:
 
     - name: SonarCloud Scan on push
       if:  github.repository == 'nixel2007/entity' && github.event_name == 'push'
-      uses: nixel2007/sonarcloud-github-action@v1.4
+      uses: nixel2007/sonarcloud-github-action@v1.5
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
            
     - name: SonarCloud Scan on PR
       if: github.repository == 'nixel2007/entity' && github.event_name == 'pull_request'
-      uses: nixel2007/sonarcloud-github-action@v1.4
+      uses: nixel2007/sonarcloud-github-action@v1.5
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
