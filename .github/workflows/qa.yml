@@ -26,7 +26,7 @@ jobs:
 
     - name: Setup PostgreSQL
       run: |
-        docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 postgres
+        docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres POSTGRES_USERNAME=postgres POSTGRES_DB=postgres POSTGRES_HOST_AUTH_METHOD=postgres --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 postgres
         docker ps
         while [ "`docker inspect -f {{.State.Health.Status}} postgres`" != "healthy" ]; do docker ps && sleep 2; done
         docker ps
