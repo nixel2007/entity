@@ -8,7 +8,7 @@
             "name": "Отладка 1Script",
             "type": "oscript",
             "request": "launch",
-            "program": "Z:\\OneScript\\entity\\tasks\\test.os",
+            "program": "${file}",
             "args": [],
             "cwd": "${workspaceRoot}",
             "env": {},
