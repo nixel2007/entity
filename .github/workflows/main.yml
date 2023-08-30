@@ -15,7 +15,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         oscript_version: ['1.8.3', 'stable']
-
     steps:
     - uses: actions/checkout@v3
 
@@ -30,30 +29,25 @@ jobs:
         opm install -l --dev
 
     - name: Install docker
-      if: matrix.os == 'macos-latest'
-      run: |
-        mkdir -p ~/.docker/machine/cache
-        curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.12/boot2docker.iso
-        brew install docker docker-machine
-        docker-machine create --driver virtualbox default
-        docker-machine env default
+      if: matrix.os != 'windows-latest'
+      uses: docker-practice/actions-setup-docker@master
+      timeout-minutes: 12
 
     - name: Setup PostgreSQL
       if: matrix.os != 'windows-latest'
       run: |
-        eval $(docker-machine env default) || true
         docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres POSTGRES_USERNAME=postgres POSTGRES_DB=postgres POSTGRES_HOST_AUTH_METHOD=password --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 postgres
         docker ps
         while [ "`docker inspect -f {{.State.Health.Status}} postgres`" != "healthy" ]; do docker ps && sleep 2; done
         docker ps
     
-    - name: Configure env vars on macos
-      if: matrix.os == 'macos-latest'
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-      run: |
-          eval $(docker-machine env default)
-          echo "::set-env name=POSTGRES_HOST::$(docker-machine ip)"
+    #- name: Configure env vars on macos
+    #  if: matrix.os == 'macos-latest'
+    #  env:
+    #    ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    #  run: |
+    #      eval $(docker-machine env default)
+    #      echo "::set-env name=POSTGRES_HOST::$(docker-machine ip)"
 
     - name: Run tests
       env:
