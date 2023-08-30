@@ -40,14 +40,6 @@ jobs:
         docker ps
         while [ "`docker inspect -f {{.State.Health.Status}} postgres`" != "healthy" ]; do docker ps && sleep 2; done
         docker ps
-    
-    #- name: Configure env vars on macos
-    #  if: matrix.os == 'macos-latest'
-    #  env:
-    #    ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-    #  run: |
-    #      eval $(docker-machine env default)
-    #      echo "::set-env name=POSTGRES_HOST::$(docker-machine ip)"
 
     - name: Run tests
       env:
