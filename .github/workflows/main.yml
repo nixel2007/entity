@@ -44,6 +44,6 @@ jobs:
     - name: Run tests
       env:
         TESTRUNNER_RUN_POSTGRES_TESTS: "${{ matrix.os != 'windows-latest' }}"
-        TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
+        TESTRUNNER_RUN_SQLITE_TESTS: true
       run: |
         oscript ./tasks/test.os
