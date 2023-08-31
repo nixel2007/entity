@@ -28,6 +28,11 @@ jobs:
         opm install opm@1.0.2
         opm install -l --dev
 
+    - name: Prepare macOS env
+      if: matrix.os == 'macos-latest'
+      run: |
+        echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
+  
     - name: Install docker
       if: matrix.os != 'windows-latest'
       uses: crazy-max/ghaction-setup-docker@v1
