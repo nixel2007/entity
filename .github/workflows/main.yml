@@ -34,12 +34,11 @@ jobs:
         echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
   
     - name: Install docker
-      if: matrix.os != 'windows-latest'
       uses: crazy-max/ghaction-setup-docker@v1
       timeout-minutes: 12
 
     - name: Setup PostgreSQL
-      if: matrix.os != 'windows-latest'
+      shell: bash
       run: |
         docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USERNAME=postgres -e POSTGRES_DB=postgres -e POSTGRES_HOST_AUTH_METHOD=password --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 postgres
         docker ps
@@ -48,7 +47,7 @@ jobs:
 
     - name: Run tests
       env:
-        TESTRUNNER_RUN_POSTGRES_TESTS: "${{ matrix.os != 'windows-latest' }}"
+        TESTRUNNER_RUN_POSTGRES_TESTS: true
         TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
       run: |
         oscript ./tasks/test.os
