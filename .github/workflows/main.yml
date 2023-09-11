@@ -44,6 +44,7 @@ jobs:
         docker ps
         while [ "`docker inspect -f {{.State.Health.Status}} postgres`" != "healthy" ]; do docker ps && sleep 2; done
         docker ps
+        sleep 5
 
     - name: Run tests
       env:
