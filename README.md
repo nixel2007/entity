@@ -45,7 +45,7 @@
     * <a href="#library-structure-connector-sqlite">КоннекторSQLite</a>
     * <a href="#library-structure-connector-postgresql">КоннекторPostgreSQL</a>
     * <a href="#library-structure-connector-json">КоннекторJSON</a>
-    * <a href="#library-structure-connector-inmemory">КоннекторJSON</a>
+    * <a href="#library-structure-connector-inmemory">КоннекторInMemory</a>
   * <a href="#versioning-strategy">Версионирование и обратная совместимость</a>
 
 <a id="entity-example" />
