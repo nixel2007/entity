@@ -23,11 +23,11 @@ jobs:
     steps:
       # Загрузка проекта
       - name: Актуализация
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Установка OneScript конкретной версии
       - name: Установка OneScript
-        uses: otymko/setup-onescript@v1.1
+        uses: otymko/setup-onescript@v1.4
         with:
           version: ${{ matrix.oscript_version }}
 
@@ -41,7 +41,7 @@ jobs:
         run: opm build .
 
       - name: Заливка артефактов
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: package.zip
           path: ./${{ env.PACKAGE_MASK }}

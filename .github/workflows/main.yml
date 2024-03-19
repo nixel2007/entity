@@ -16,10 +16,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         oscript_version: ['1.8.3', 'stable']
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Setup Onescript Action
-      uses: otymko/setup-onescript@v1.1
+      uses: otymko/setup-onescript@v1.4
       with:
         version: ${{ matrix.oscript_version }}
 
@@ -28,22 +28,26 @@ jobs:
         opm install opm@1.0.2
         opm install -l --dev
 
+    - name: Prepare macOS env
+      if: matrix.os == 'macos-latest'
+      run: |
+        echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
+
     - name: Install docker
-      if: matrix.os != 'windows-latest'
-      uses: crazy-max/ghaction-setup-docker@v1
+      uses: crazy-max/ghaction-setup-docker@v3
       timeout-minutes: 12
 
     - name: Setup PostgreSQL
-      if: matrix.os != 'windows-latest'
+      shell: bash
       run: |
-        docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USERNAME=postgres -e POSTGRES_DB=postgres -e POSTGRES_HOST_AUTH_METHOD=password --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 postgres
+        docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USERNAME=postgres -e POSTGRES_DB=postgres -e POSTGRES_HOST_AUTH_METHOD=password --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 satrapu/postgresql 
         docker ps
         while [ "`docker inspect -f {{.State.Health.Status}} postgres`" != "healthy" ]; do docker ps && sleep 2; done
         docker ps
 
     - name: Run tests
       env:
-        TESTRUNNER_RUN_POSTGRES_TESTS: "${{ matrix.os != 'windows-latest' }}"
+        TESTRUNNER_RUN_POSTGRES_TESTS: true
         TESTRUNNER_RUN_SQLITE_TESTS: "${{ matrix.os == 'windows-latest' }}"
       run: |
         oscript ./tasks/test.os
