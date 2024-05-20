@@ -29,7 +29,7 @@ jobs:
         opm install -l --dev
 
     - name: Prepare macOS env
-      if: matrix.os == 'macos-latest'
+      if: matrix.os == 'macos-13'
       run: |
         echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
 
