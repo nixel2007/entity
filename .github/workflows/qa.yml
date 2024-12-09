@@ -25,7 +25,7 @@ jobs:
         opm install -l --dev
 
     - name: Install docker
-      uses: crazy-max/ghaction-setup-docker@v4
+      uses: docker/setup-docker-action@v4
       timeout-minutes: 12
 
     - name: Setup PostgreSQL
