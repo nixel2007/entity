@@ -22,7 +22,8 @@ jobs:
     - name: Install dependencies
       run: |
         opm install opm@1.0.2
-        opm install -l --dev
+        opm install -l
+        opm install -l 1commands 1testrunner coverage
 
     - name: Install docker
       uses: crazy-max/ghaction-setup-docker@v3
