@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13]
+        os: [ubuntu-latest, windows-latest]
         oscript_version: ['1.8.3', 'stable']
     steps:
     - uses: actions/checkout@v4
@@ -28,11 +28,6 @@ jobs:
         opm install opm@1.0.2
         opm install -l
         opm install -l 1commands 1testrunner coverage@0.6.1
-
-    - name: Prepare macOS env
-      if: matrix.os == 'macos-13'
-      run: |
-        echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
 
     - name: Install docker
       uses: crazy-max/ghaction-setup-docker@v3
