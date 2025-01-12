@@ -27,7 +27,7 @@ jobs:
       run: |
         opm install opm@1.0.2
         opm install -l
-        opm install -l 1commands 1testrunner coverage
+        opm install -l 1commands 1testrunner coverage@0.6.1
 
     - name: Prepare macOS env
       if: matrix.os == 'macos-13'
