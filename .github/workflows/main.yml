@@ -13,13 +13,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         oscript_version: ['1.8.3', 'stable']
     steps:
     - uses: actions/checkout@v4
 
     - name: Prepare macOS env
-      if: matrix.os == 'macos-13'
+      if: matrix.os == 'macos-latest'
       run: |
         echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
         softwareupdate --install-rosetta
