@@ -1,4 +1,6 @@
+// BSLLS:MagicNumber-off
 // BSLLS:LatinAndCyrillicSymbolInWord-off
+// BSLLS:DuplicateStringLiteral-off
 // BSLLS:LineLength-off
 
 #Использовать fs
