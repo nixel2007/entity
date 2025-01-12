@@ -22,7 +22,7 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
-        softwareupdate --install-rosetta
+        softwareupdate --install-rosetta --agree-to-license
 
     - name: Setup Onescript Action
       uses: otymko/setup-onescript@v1.4
