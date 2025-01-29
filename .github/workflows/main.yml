@@ -36,7 +36,7 @@ jobs:
         opm install -l 1commands 1testrunner coverage@0.6.1
 
     - name: Install docker
-      uses: crazy-max/ghaction-setup-docker@v3
+      uses: docker/setup-docker-action@v4
       timeout-minutes: 12
 
     - name: Setup PostgreSQL
