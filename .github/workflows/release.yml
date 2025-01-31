@@ -6,7 +6,7 @@ name: Подготовка релиза и публикация в хабе
 # Только события создания и изменения релиза
 on:
   release:
-      types: [published]
+    types: [published]
 
 env:
   PACKAGE_MASK: entity-*.ospx
