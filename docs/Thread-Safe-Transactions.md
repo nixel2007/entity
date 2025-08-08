@@ -1,6 +1,6 @@
 # Thread-Safe Transactions
 
-Starting from version 3.5.0, the Entity library supports thread-safe transactions through connection pooling.
+Starting from version 3.5.0, the Entity library supports thread-safe transactions through connection pooling with a simplified API.
 
 ## Problem
 
@@ -15,7 +15,7 @@ Thread1: МенеджерСущностей.ЗафиксироватьТранз
 
 ## Solution
 
-The library now supports connection pooling. Each connection has its own transaction state, ensuring thread safety.
+The library now supports connection pooling with automatic context management. Each transaction gets its own context and connector, ensuring thread safety without complex parameter passing.
 
 ## Usage
 
@@ -31,49 +31,34 @@ The library now supports connection pooling. Each connection has its own transac
 );
 ```
 
-### Thread-Safe Transactions
+### Simplified Thread-Safe Transactions
 
 ```bsl
-// Thread 1: Get connection from pool
-Соединение1 = МенеджерСущностей.НачатьТранзакцию();
+// Simple approach - library automatically manages contexts
+КонтекстID = МенеджерСущностей.НачатьТранзакцию();
 
-// Thread 2: Get different connection from pool  
-Соединение2 = МенеджерСущностей.НачатьТранзакцию();
+// All CRUD operations can optionally use the context
+МенеджерСущностей.Сохранить(Сущность, КонтекстID);
+ЗагруженныеСущности = МенеджерСущностей.Получить(Тип("МояСущность"), Неопределено, КонтекстID);
 
-// Each thread works with its own connection
-МенеджерСущностей.Сохранить(Сущность1, Соединение1);
-МенеджерСущностей.Сохранить(Сущность2, Соединение2);
-
-// Thread 1: Commit only its transaction
-МенеджерСущностей.ЗафиксироватьТранзакцию(Соединение1);
-
-// Thread 2: Rollback only its transaction
-МенеджерСущностей.ОтменитьТранзакцию(Соединение2);
+// Commit the transaction
+МенеджерСущностей.ЗафиксироватьТранзакцию(КонтекстID);
 ```
 
-### Manual Connection Management
+### Multiple Concurrent Transactions
 
 ```bsl
-// Get connection from pool for custom operations
-Соединение = МенеджерСущностей.ПолучитьСоединение();
+// Thread 1: 
+КонтекстID1 = МенеджерСущностей.НачатьТранзакцию();
+МенеджерСущностей.Сохранить(Сущность1, КонтекстID1);
 
-// Use for CRUD operations
-МенеджерСущностей.Сохранить(Сущность, Соединение);
-МенеджерСущностей.Получить(Тип("МояСущность"), ОпцииПоиска, Соединение);
+// Thread 2: Independent transaction
+КонтекстID2 = МенеджерСущностей.НачатьТранзакцию();  
+МенеджерСущностей.Сохранить(Сущность2, КонтекстID2);
 
-// Always return connection to pool when done
-МенеджерСущностей.ВернутьСоединение(Соединение);
-```
-
-### Repository Usage
-
-```bsl
-ХранилищеСущностей = МенеджерСущностей.ПолучитьХранилищеСущностей(Тип("МояСущность"));
-
-// Thread-safe transaction through repository
-Соединение = ХранилищеСущностей.НачатьТранзакцию();
-ХранилищеСущностей.Сохранить(Сущность, Соединение);
-ХранилищеСущностей.ЗафиксироватьТранзакцию(Соединение);
+// Each thread commits independently
+МенеджерСущностей.ЗафиксироватьТранзакцию(КонтекстID1); // Thread 1
+МенеджерСущностей.ОтменитьТранзакцию(КонтекстID2); // Thread 2
 ```
 
 ## Backward Compatibility
@@ -88,15 +73,31 @@ All existing code continues to work without modification:
 МенеджерСущностей.ЗафиксироватьТранзакцию();
 ```
 
+### CRUD Operations
+
+All CRUD operations support optional context parameters:
+
+```bsl
+// Without context (uses default connector)
+МенеджерСущностей.Сохранить(Сущность);
+Результат = МенеджерСущностей.Получить(Тип("МояСущность"));
+
+// With context (uses transaction-specific connector)
+МенеджерСущностей.Сохранить(Сущность, КонтекстID);
+Результат = МенеджерСущностей.Получить(Тип("МояСущность"), ОпцииПоиска, КонтекстID);
+МенеджерСущностей.Удалить(Сущность, КонтекстID);
+```
+
 ## Connection Pool Configuration
 
 - **Pool Size**: Determines the maximum number of concurrent connections
-- **Default**: Pool is disabled (backward compatibility)
+- **Default**: Pool is disabled (backward compatibility)  
 - **Recommendation**: Set pool size to expected number of concurrent threads
 
-## Performance Considerations
+## Key Features
 
-- Each connection in the pool maintains its own database connection
-- Connections are reused to minimize connection overhead
-- Pool automatically expands when more connections are needed than pool size
-- Unused connections are closed when returned to an oversized pool
+- **Simplified API**: No need to manually manage connection objects
+- **Automatic Context Management**: Connectors are automatically assigned to contexts
+- **Backward Compatibility**: All existing code works unchanged
+- **Thread Safety**: Each transaction context is isolated
+- **Performance**: Connection reuse minimizes database connection overhead
