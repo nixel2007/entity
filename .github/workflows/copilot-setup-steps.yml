@@ -17,7 +17,7 @@ jobs:
     # Setup steps for OneScript development environment
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - run: git config --global core.quotepath false
 
