@@ -22,6 +22,7 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
+        command -v mono >/dev/null || brew install mono
         softwareupdate --install-rosetta --agree-to-license
 
     - name: Setup Onescript Action
