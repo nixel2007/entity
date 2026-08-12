@@ -23,7 +23,7 @@ jobs:
       run: |
         echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
         command -v mono >/dev/null || brew install mono
-        softwareupdate --install-rosetta --agree-to-license
+        [[ "$(uname -m)" == "arm64" ]] && softwareupdate --install-rosetta --agree-to-license || true
 
     - name: Setup Onescript Action
       uses: otymko/setup-onescript@v1.5
