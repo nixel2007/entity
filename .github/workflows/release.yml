@@ -5,8 +5,8 @@
 name: Подготовка релиза и публикация в хабе
 # Только события создания и изменения релиза
 on:
-    release:
-        types: [published, edited]
+  release:
+    types: [published]
 
 env:
   PACKAGE_MASK: entity-*.ospx
@@ -18,16 +18,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        oscript_version: ['1.8.3']
+        oscript_version: ['1.9.2']
         
     steps:
       # Загрузка проекта
       - name: Актуализация
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Установка OneScript конкретной версии
       - name: Установка OneScript
-        uses: otymko/setup-onescript@v1.4
+        uses: otymko/setup-onescript@v1.5
         with:
           version: ${{ matrix.oscript_version }}
 
@@ -41,7 +41,7 @@ jobs:
         run: opm build .
 
       - name: Заливка артефактов
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package.zip
           path: ./${{ env.PACKAGE_MASK }}

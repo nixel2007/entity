@@ -9,15 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
     - name: Setup Onescript Action
-      uses: otymko/setup-onescript@v1.4
+      uses: otymko/setup-onescript@v1.5
       with:
-        version: "1.8.3"
+        version: "1.9.2"
 
     - name: Install dependencies
       run: |
@@ -26,7 +26,7 @@ jobs:
         opm install -l 1commands 1testrunner coverage@0.6.1
 
     - name: Install docker
-      uses: docker/setup-docker-action@v4
+      uses: docker/setup-docker-action@v5
       timeout-minutes: 12
 
     - name: Setup PostgreSQL
@@ -52,7 +52,7 @@ jobs:
         oscript ./tasks/coverage.os
 
     - name: Setup sonarqube
-      uses: warchant/setup-sonar-scanner@v8
+      uses: warchant/setup-sonar-scanner@v10
 
       # Анализ проекта в SonarQube (ветка)
     - name: Анализ в SonarQube (branch)
