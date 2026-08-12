@@ -2,6 +2,7 @@
 // BSLLS:DuplicateStringLiteral-off
 
 #Использовать ".."
+#Использовать "../src/internal/concurrent"
 
 #Использовать asserts
 
