@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v7
 
     - name: Prepare macOS env
-      if: matrix.os == 'macos-latest'
+      if: matrix.os == 'macos-15-intel'
       run: |
         echo "SIGN_QEMU_BINARY=1" >> "$GITHUB_ENV"
         command -v mono >/dev/null || brew install mono
