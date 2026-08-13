@@ -7,10 +7,12 @@
 // BSLLS:MagicNumber-off
 // BSLLS:LatinAndCyrillicSymbolInWord-off
 // BSLLS:DuplicateStringLiteral-off
+// BSLLS:UsingHardcodeNetworkAddress-off
 
 #Использовать ".."
 #Использовать "utils"
 
+// Менеджер, который тесты создают заново перед каждым тестом.
 Перем МенеджерСущностей;
 
 Процедура ПередЗапускомТеста() Экспорт
