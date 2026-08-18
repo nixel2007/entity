@@ -23,13 +23,17 @@ docker run --rm --name postgres -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e
 Для запуска тестов используется команда:
 
 ```sh
-TESTRUNNER_RUN_POSTGRES_TESTS=true TESTRUNNER_RUN_SQLITE_TESTS=false oscript tasks/test.os
+TESTRUNNER_RUN_POSTGRES_TESTS=true TESTRUNNER_RUN_SQLITE_TESTS=false \
+  ./oscript_modules/bin/oneunit execute
 ```
 
 Для запуска тестов с замером покрытия используется команда:
 
 ```sh
-TESTRUNNER_RUN_POSTGRES_TESTS=true TESTRUNNER_RUN_SQLITE_TEST=false oscript tasks/coverage.os
+TESTRUNNER_RUN_POSTGRES_TESTS=true TESTRUNNER_RUN_SQLITE_TESTS=false \
+  ./oscript_modules/bin/oneunit execute \
+    --genericExecution out/tests.xml \
+    --genericCoverage out/genericCoverage.xml
 ```
 
 Замеры покрытия доступны в подкаталоге `out`.

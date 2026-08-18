@@ -14,9 +14,12 @@
 ```
 opm install opm@1.0.2
 opm install -l
-opm install -l 1commands 1testrunner coverage@0.6.1
-oscript ./tasks/test.os
+opm install -l --dev
+./oscript_modules/bin/oneunit execute
 ```
 
-Переменные среды `TESTRUNNER_RUN_SQLITE_TESTS` и `TESTRUNNER_RUN_POSTGRES_TESTS`
-включают наборы, требующие соответствующей базы.
+Тесты гоняет [oneunit](https://github.com/sfaqer/oneunit). Переменные среды
+`TESTRUNNER_RUN_SQLITE_TESTS` и `TESTRUNNER_RUN_POSTGRES_TESTS` — единственный
+способ сказать, какие базы доступны. Наборы, которым нужна конкретная база,
+выключаются аннотацией `&ВключенЕсли`, читающей ту же переменную; наборы,
+работающие с любой из двух, выбирают по ним базу сами.
