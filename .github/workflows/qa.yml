@@ -21,7 +21,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        opm install opm@1.0.2
+        opm install opm
         opm install -l
         opm install -l --dev
 
