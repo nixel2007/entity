@@ -1,0 +1,8 @@
+{
+    "mcpServers": {
+        "bsl-language-server": {
+            "type": "http",
+            "url": "http://localhost:8234/mcp"
+        }
+    }
+}
