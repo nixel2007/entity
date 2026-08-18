@@ -77,7 +77,9 @@
 
 #Область СлужебныйПрограммныйИнтерфейс
 
+// BSLLS:UsingServiceTag-off
 // @internal
+// BSLLS:UsingServiceTag-on
 //
 // Для служебного пользования.
 //
