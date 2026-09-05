@@ -17,13 +17,13 @@ jobs:
     - name: Setup Onescript Action
       uses: otymko/setup-onescript@v1.5
       with:
-        version: "1.9.2"
+        version: "2.2.0"
 
     - name: Install dependencies
       run: |
-        opm install opm@1.0.2
+        opm install opm
         opm install -l
-        opm install -l 1commands 1testrunner coverage@0.6.1
+        opm install -l --dev
 
     - name: Install docker
       uses: docker/setup-docker-action@v5
@@ -49,7 +49,9 @@ jobs:
         TESTRUNNER_RUN_POSTGRES_TESTS: true
         TESTRUNNER_RUN_SQLITE_TESTS: false
       run: |
-        oscript ./tasks/coverage.os
+        ./oscript_modules/bin/oneunit execute \
+          --genericExecution out/tests.xml \
+          --genericCoverage out/genericCoverage.xml
 
     - name: Setup sonarqube
       uses: warchant/setup-sonar-scanner@v10
