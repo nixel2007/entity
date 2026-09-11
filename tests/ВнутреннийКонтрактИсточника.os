@@ -5,6 +5,7 @@
 //
 // BSLLS:MagicNumber-off
 // BSLLS:DuplicateStringLiteral-off
+// BSLLS:UsingHardcodeNetworkAddress-off
 
 #Использовать ".."
 #Использовать "../src/internal"
