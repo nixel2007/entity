@@ -4,7 +4,7 @@
 //
 // BSLLS:CodeOutOfRegion-off
 Описание.Имя("entity")
-        .Версия("5.4.0.1")
+        .Версия("5.4.0.2")
         .Автор("Nikita Fedkin")
         .АдресАвтора("nixel2007@gmail.com")
         .Описание("entity")
